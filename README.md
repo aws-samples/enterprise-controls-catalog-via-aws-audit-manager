@@ -1,6 +1,6 @@
 ## My Project
 
-TODO: Fill this README out!
+TODO: Fill this README out! This file acts as the guide to anyone using the repo
 
 Test access 
 
