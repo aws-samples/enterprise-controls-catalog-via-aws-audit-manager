@@ -49,6 +49,16 @@ cd enterprise-controls-catalog-via-aws-audit-manager
 
 ```
 
+## Contributors
+ 
+Hu Jin  - SA SDE, AWS
+
+Vinodh Shankar -  Senior SA, AWS
+
+Jasper Wang - Cloud Architect, AWS Professional Services
+
+Deenadayaalan Thirugnanasambandam, Principal SA SDE, AWS
+
 
 ## Security
 
