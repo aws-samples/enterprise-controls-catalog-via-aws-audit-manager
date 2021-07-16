@@ -1,0 +1,19 @@
+{
+    "name": "Example Framework 2",
+    "description": "Description of example framework 2",
+    "complianceType": "HIPAA",
+    "controlSets": [
+        {
+            "name": "Example Control Set 1",
+            "controls": ["Example Control 1"]
+        },
+        {
+            "name": "Example Control Set 2",
+            "controls": ["Example Control 2"]
+        }
+    ],
+    "tags": {
+        "Tag1": "Value1",
+        "Tag2": "Value2"
+    }
+}

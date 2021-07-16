@@ -1,0 +1,6 @@
+export var fromStatic = function (staticValue) {
+    return function () {
+        return Promise.resolve(staticValue);
+    };
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZnJvbVN0YXRpYy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9mcm9tU3RhdGljLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLE1BQU0sQ0FBQyxJQUFNLFVBQVUsR0FDckIsVUFBSSxXQUFjO0lBQ2xCLE9BQUE7UUFDRSxPQUFBLE9BQU8sQ0FBQyxPQUFPLENBQUMsV0FBVyxDQUFDO0lBQTVCLENBQTRCO0FBRDlCLENBQzhCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBQcm92aWRlciB9IGZyb20gXCJAYXdzLXNkay90eXBlc1wiO1xuXG5leHBvcnQgY29uc3QgZnJvbVN0YXRpYyA9XG4gIDxUPihzdGF0aWNWYWx1ZTogVCk6IFByb3ZpZGVyPFQ+ID0+XG4gICgpID0+XG4gICAgUHJvbWlzZS5yZXNvbHZlKHN0YXRpY1ZhbHVlKTtcbiJdfQ==

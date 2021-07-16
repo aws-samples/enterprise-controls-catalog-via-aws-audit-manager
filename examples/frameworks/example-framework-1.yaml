@@ -1,0 +1,11 @@
+name: Example Framework 1
+description: Description of example framework 1
+complianceType: HIPAA
+controlSets:
+    - name: Example Control Set 1
+      controls:
+          - Example Control 1
+          - Example Control 2
+tags:
+    Tag1: Value1
+    Tag2: Value2

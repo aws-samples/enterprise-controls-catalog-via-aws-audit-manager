@@ -1,0 +1,8 @@
+name: Example Control 1
+description: Description of example control 1
+actionPlanTitle: This is the action plan title
+actionPlanInstructions: This is the action plan instructions
+testingInformation: This is the testing information
+tags:
+    Tag1: Value1
+    Tag2: Value2

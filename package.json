@@ -1,0 +1,48 @@
+{
+    "name": "audit-manager-blog",
+    "version": "0.1.0",
+    "bin": {
+        "audit-manager-blog": "bin/audit-manager-blog.js"
+    },
+    "scripts": {
+        "lint": "eslint --fix --ext .ts .",
+        "build:lambda": "cd lambda && npm run build && cd ..",
+        "build:infra": "tsc",
+        "build": "npm run build:lambda && npm run build:infra",
+        "synth": "cdk synth -q",
+        "watch": "tsc -w",
+        "test": "jest",
+        "cdk": "cdk",
+        "all": "npm run lint && npm run build && npm run test && npm run synth"
+    },
+    "devDependencies": {
+        "@aws-cdk/assert": "1.108.0",
+        "@types/jest": "^26.0.10",
+        "@types/node": "10.17.27",
+        "aws-cdk": "1.108.0",
+        "aws-lambda": "^1.0.6",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.2.0",
+        "ts-loader": "^9.2.3",
+        "ts-node": "^9.0.0",
+        "typescript": "~3.9.7",
+        "@typescript-eslint/eslint-plugin": "^4.11.1",
+        "@typescript-eslint/parser": "^4.11.1",
+        "eslint": "^7.16.0",
+        "prettier": "^2.2.1",
+        "eslint-config-prettier": "^7.1.0",
+        "eslint-config-typescript": "^3.0.0",
+        "eslint-plugin-header": "^3.1.0",
+        "eslint-plugin-prettier": "^3.3.0"
+    },
+    "dependencies": {
+        "@aws-cdk/aws-lambda": "^1.108.0",
+        "@aws-cdk/aws-s3": "^1.108.0",
+        "@aws-cdk/aws-s3-notifications": "^1.108.0",
+        "@aws-cdk/aws-sns": "^1.108.0",
+        "@aws-cdk/core": "1.108.0",
+        "@types/js-yaml": "^4.0.2",
+        "lodash": "^4.17.21",
+        "source-map-support": "^0.5.16"
+    }
+}

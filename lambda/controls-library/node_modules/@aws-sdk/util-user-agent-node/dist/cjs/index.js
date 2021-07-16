@@ -1,0 +1,47 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.defaultUserAgent = exports.UA_APP_ID_INI_NAME = exports.UA_APP_ID_ENV_NAME = void 0;
+const node_config_provider_1 = require("@aws-sdk/node-config-provider");
+const os_1 = require("os");
+const process_1 = require("process");
+exports.UA_APP_ID_ENV_NAME = "AWS_SDK_UA_APP_ID";
+exports.UA_APP_ID_INI_NAME = "sdk-ua-app-id";
+/**
+ * Collect metrics from runtime to put into user agent.
+ */
+const defaultUserAgent = ({ serviceId, clientVersion }) => {
+    const sections = [
+        // sdk-metadata
+        ["aws-sdk-js", clientVersion],
+        // os-metadata
+        [`os/${os_1.platform()}`, os_1.release()],
+        // language-metadata
+        // ECMAScript edition doesn't matter in JS, so no version needed.
+        ["lang/js"],
+        ["md/nodejs", `${process_1.versions.node}`],
+    ];
+    if (serviceId) {
+        // api-metadata
+        // service Id may not appear in non-AWS clients
+        sections.push([`api/${serviceId}`, clientVersion]);
+    }
+    if (process_1.env.AWS_EXECUTION_ENV) {
+        // env-metadata
+        sections.push([`exec-env/${process_1.env.AWS_EXECUTION_ENV}`]);
+    }
+    const appIdPromise = node_config_provider_1.loadConfig({
+        environmentVariableSelector: (env) => env[exports.UA_APP_ID_ENV_NAME],
+        configFileSelector: (profile) => profile[exports.UA_APP_ID_INI_NAME],
+        default: undefined,
+    })();
+    let resolvedUserAgent = undefined;
+    return async () => {
+        if (!resolvedUserAgent) {
+            const appId = await appIdPromise;
+            resolvedUserAgent = appId ? [...sections, [`app/${appId}`]] : [...sections];
+        }
+        return resolvedUserAgent;
+    };
+};
+exports.defaultUserAgent = defaultUserAgent;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsd0VBQTJEO0FBRTNELDJCQUF1QztBQUN2QyxxQ0FBd0M7QUFFM0IsUUFBQSxrQkFBa0IsR0FBRyxtQkFBbUIsQ0FBQztBQUN6QyxRQUFBLGtCQUFrQixHQUFHLGVBQWUsQ0FBQztBQU9sRDs7R0FFRztBQUNJLE1BQU0sZ0JBQWdCLEdBQUcsQ0FBQyxFQUFFLFNBQVMsRUFBRSxhQUFhLEVBQTJCLEVBQXVCLEVBQUU7SUFDN0csTUFBTSxRQUFRLEdBQWM7UUFDMUIsZUFBZTtRQUNmLENBQUMsWUFBWSxFQUFFLGFBQWEsQ0FBQztRQUM3QixjQUFjO1FBQ2QsQ0FBQyxNQUFNLGFBQVEsRUFBRSxFQUFFLEVBQUUsWUFBTyxFQUFFLENBQUM7UUFDL0Isb0JBQW9CO1FBQ3BCLGlFQUFpRTtRQUNqRSxDQUFDLFNBQVMsQ0FBQztRQUNYLENBQUMsV0FBVyxFQUFFLEdBQUcsa0JBQVEsQ0FBQyxJQUFJLEVBQUUsQ0FBQztLQUNsQyxDQUFDO0lBRUYsSUFBSSxTQUFTLEVBQUU7UUFDYixlQUFlO1FBQ2YsK0NBQStDO1FBQy9DLFFBQVEsQ0FBQyxJQUFJLENBQUMsQ0FBQyxPQUFPLFNBQVMsRUFBRSxFQUFFLGFBQWEsQ0FBQyxDQUFDLENBQUM7S0FDcEQ7SUFFRCxJQUFJLGFBQUcsQ0FBQyxpQkFBaUIsRUFBRTtRQUN6QixlQUFlO1FBQ2YsUUFBUSxDQUFDLElBQUksQ0FBQyxDQUFDLFlBQVksYUFBRyxDQUFDLGlCQUFpQixFQUFFLENBQUMsQ0FBQyxDQUFDO0tBQ3REO0lBRUQsTUFBTSxZQUFZLEdBQUcsaUNBQVUsQ0FBcUI7UUFDbEQsMkJBQTJCLEVBQUUsQ0FBQyxHQUFHLEVBQUUsRUFBRSxDQUFDLEdBQUcsQ0FBQywwQkFBa0IsQ0FBQztRQUM3RCxrQkFBa0IsRUFBRSxDQUFDLE9BQU8sRUFBRSxFQUFFLENBQUMsT0FBTyxDQUFDLDBCQUFrQixDQUFDO1FBQzVELE9BQU8sRUFBRSxTQUFTO0tBQ25CLENBQUMsRUFBRSxDQUFDO0lBRUwsSUFBSSxpQkFBaUIsR0FBMEIsU0FBUyxDQUFDO0lBQ3pELE9BQU8sS0FBSyxJQUFJLEVBQUU7UUFDaEIsSUFBSSxDQUFDLGlCQUFpQixFQUFFO1lBQ3RCLE1BQU0sS0FBSyxHQUFHLE1BQU0sWUFBWSxDQUFDO1lBQ2pDLGlCQUFpQixHQUFHLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxHQUFHLFFBQVEsRUFBRSxDQUFDLE9BQU8sS0FBSyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLEdBQUcsUUFBUSxDQUFDLENBQUM7U0FDN0U7UUFDRCxPQUFPLGlCQUFpQixDQUFDO0lBQzNCLENBQUMsQ0FBQztBQUNKLENBQUMsQ0FBQztBQXJDVyxRQUFBLGdCQUFnQixvQkFxQzNCIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgbG9hZENvbmZpZyB9IGZyb20gXCJAYXdzLXNkay9ub2RlLWNvbmZpZy1wcm92aWRlclwiO1xuaW1wb3J0IHsgUHJvdmlkZXIsIFVzZXJBZ2VudCB9IGZyb20gXCJAYXdzLXNkay90eXBlc1wiO1xuaW1wb3J0IHsgcGxhdGZvcm0sIHJlbGVhc2UgfSBmcm9tIFwib3NcIjtcbmltcG9ydCB7IGVudiwgdmVyc2lvbnMgfSBmcm9tIFwicHJvY2Vzc1wiO1xuXG5leHBvcnQgY29uc3QgVUFfQVBQX0lEX0VOVl9OQU1FID0gXCJBV1NfU0RLX1VBX0FQUF9JRFwiO1xuZXhwb3J0IGNvbnN0IFVBX0FQUF9JRF9JTklfTkFNRSA9IFwic2RrLXVhLWFwcC1pZFwiO1xuXG5pbnRlcmZhY2UgRGVmYXVsdFVzZXJBZ2VudE9wdGlvbnMge1xuICBzZXJ2aWNlSWQ/OiBzdHJpbmc7XG4gIGNsaWVudFZlcnNpb246IHN0cmluZztcbn1cblxuLyoqXG4gKiBDb2xsZWN0IG1ldHJpY3MgZnJvbSBydW50aW1lIHRvIHB1dCBpbnRvIHVzZXIgYWdlbnQuXG4gKi9cbmV4cG9ydCBjb25zdCBkZWZhdWx0VXNlckFnZW50ID0gKHsgc2VydmljZUlkLCBjbGllbnRWZXJzaW9uIH06IERlZmF1bHRVc2VyQWdlbnRPcHRpb25zKTogUHJvdmlkZXI8VXNlckFnZW50PiA9PiB7XG4gIGNvbnN0IHNlY3Rpb25zOiBVc2VyQWdlbnQgPSBbXG4gICAgLy8gc2RrLW1ldGFkYXRhXG4gICAgW1wiYXdzLXNkay1qc1wiLCBjbGllbnRWZXJzaW9uXSxcbiAgICAvLyBvcy1tZXRhZGF0YVxuICAgIFtgb3MvJHtwbGF0Zm9ybSgpfWAsIHJlbGVhc2UoKV0sXG4gICAgLy8gbGFuZ3VhZ2UtbWV0YWRhdGFcbiAgICAvLyBFQ01BU2NyaXB0IGVkaXRpb24gZG9lc24ndCBtYXR0ZXIgaW4gSlMsIHNvIG5vIHZlcnNpb24gbmVlZGVkLlxuICAgIFtcImxhbmcvanNcIl0sXG4gICAgW1wibWQvbm9kZWpzXCIsIGAke3ZlcnNpb25zLm5vZGV9YF0sXG4gIF07XG5cbiAgaWYgKHNlcnZpY2VJZCkge1xuICAgIC8vIGFwaS1tZXRhZGF0YVxuICAgIC8vIHNlcnZpY2UgSWQgbWF5IG5vdCBhcHBlYXIgaW4gbm9uLUFXUyBjbGllbnRzXG4gICAgc2VjdGlvbnMucHVzaChbYGFwaS8ke3NlcnZpY2VJZH1gLCBjbGllbnRWZXJzaW9uXSk7XG4gIH1cblxuICBpZiAoZW52LkFXU19FWEVDVVRJT05fRU5WKSB7XG4gICAgLy8gZW52LW1ldGFkYXRhXG4gICAgc2VjdGlvbnMucHVzaChbYGV4ZWMtZW52LyR7ZW52LkFXU19FWEVDVVRJT05fRU5WfWBdKTtcbiAgfVxuXG4gIGNvbnN0IGFwcElkUHJvbWlzZSA9IGxvYWRDb25maWc8c3RyaW5nIHwgdW5kZWZpbmVkPih7XG4gICAgZW52aXJvbm1lbnRWYXJpYWJsZVNlbGVjdG9yOiAoZW52KSA9PiBlbnZbVUFfQVBQX0lEX0VOVl9OQU1FXSxcbiAgICBjb25maWdGaWxlU2VsZWN0b3I6IChwcm9maWxlKSA9PiBwcm9maWxlW1VBX0FQUF9JRF9JTklfTkFNRV0sXG4gICAgZGVmYXVsdDogdW5kZWZpbmVkLFxuICB9KSgpO1xuXG4gIGxldCByZXNvbHZlZFVzZXJBZ2VudDogVXNlckFnZW50IHwgdW5kZWZpbmVkID0gdW5kZWZpbmVkO1xuICByZXR1cm4gYXN5bmMgKCkgPT4ge1xuICAgIGlmICghcmVzb2x2ZWRVc2VyQWdlbnQpIHtcbiAgICAgIGNvbnN0IGFwcElkID0gYXdhaXQgYXBwSWRQcm9taXNlO1xuICAgICAgcmVzb2x2ZWRVc2VyQWdlbnQgPSBhcHBJZCA/IFsuLi5zZWN0aW9ucywgW2BhcHAvJHthcHBJZH1gXV0gOiBbLi4uc2VjdGlvbnNdO1xuICAgIH1cbiAgICByZXR1cm4gcmVzb2x2ZWRVc2VyQWdlbnQ7XG4gIH07XG59O1xuIl19
