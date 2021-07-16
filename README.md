@@ -36,17 +36,17 @@ The proposed solution enables automated controls management using event driven a
 ![Enterprise Controls using Audit Manager](/images/solution-overview.png?raw=true "Enterprise Controls using Audit Manager")
 
 
-
 ## Deployment
 
 Before deployment, please make sure that the correct AWS credentials are configured in your terminal session. It can be either in the environment variables or in `~/.aws`. More details, please refer to [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
 
-When ready, clone this report, then use the following command
+When ready, clone this repo, then use the following command
 
 ```
-cd audit-manager-blog
+cd enterprise-controls-catalog-via-aws-audit-manager
 
 ./deploy.sh
+
 ```
 
 
