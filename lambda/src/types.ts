@@ -15,23 +15,33 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 export interface Control {
-    name: string;
-    description?: string;
-    actionPlanInstructions?: string;
-    actionPlanTitle?: string;
-    testingInformation?: string;
-    tags?: Record<string, string>;
+  name: string;
+  description?: string;
+  actionPlanInstructions?: string;
+  actionPlanTitle?: string;
+  testingInformation?: string;
+  tags?: Record<string, string>;
+  datasources?: dataSource[];
 }
 
+export interface dataSource {
+  sourceSetUpOption: string;
+  sourceType: string;
+  sourceName: string;
+  sourceDescription: string;
+  troubleshootingText?: string;
+  sourceKeyword?: Record<string, string>;
+  sourceFrequency?: string;
+}
 export interface ControlSet {
-    name: string;
-    controls: string[];
+  name: string;
+  controls: string[];
 }
 
 export interface Framework {
-    name: string;
-    description?: string;
-    complianceType?: string;
-    tags?: Record<string, string>;
-    controlSets: ControlSet[];
+  name: string;
+  description?: string;
+  complianceType?: string;
+  tags?: Record<string, string>;
+  controlSets: ControlSet[];
 }

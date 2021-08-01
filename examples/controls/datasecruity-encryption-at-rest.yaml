@@ -1,0 +1,12 @@
+name: DataSecruity-DataAtRest
+description: Information and records (data) are managed consistent with the organization’s risk strategy to protect the confidentiality, integrity, and availability of information.
+actionPlanTitle: All Resources needs to be encrypted in Transit
+actionPlanInstructions: Ensure all resoruces have attestations for Encryption in Transit enabled
+testingInformation: Test attestations - preventive and detective controls for envryption in Transit
+tags:
+  ID: PRDS-2
+  Subcategory: Data-in-transit
+  Category: Data Security-PRDS
+  CIS: CIS17
+  COBIT: COBIT 5 APO07-03
+  NIST: NIST SP 800-53 Rev 4

@@ -1,0 +1,24 @@
+name: DataSecruity-DatainTransit
+description: Information and records (data) are managed consistent with the organization’s risk strategy to protect the confidentiality, integrity, and availability of information.
+actionPlanTitle: All Resources needs to be encrypted at Rest
+actionPlanInstructions: Ensure all resoruces have attestations for Encryption at rest enabled
+testingInformation: Test attestations - preventive and detective controls for envryption at rest
+tags:
+  ID: PRDS-1
+  Subcategory: Data-in-transit
+  Category: Data Security-PRDS
+  CIS: CIS17
+  COBIT: COBIT 5 APO07-03
+  NIST: NIST SP 800-53 Rev 4
+datasources:
+  - sourceName: Manual Attestation
+    sourceDescription: Manual attestation
+    sourceSetUpOption: Procedural_Controls_Mapping
+    sourceType: MANUAL
+  - sourceName: Config Attestation
+    sourceDescription: Config attestation
+    sourceSetUpOption: System_Controls_Mapping
+    sourceType: AWS_Config
+    sourceKeyword:
+      keywordInputType: SELECT_FROM_LIST
+      keywordValue: REQUIRED_TAGS

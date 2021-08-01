@@ -1,0 +1,20 @@
+node_modules
+dist/
+build/
+**/.vscode/*
+reports/
+coverage/
+.aws-sam/
+output/
+.DS_Store
+cdk.out
+
+*.d.ts
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+cdk.context.json
+Blog-Code-awsSecurityBlog-948-.zip
+**/.scannerwork/*
