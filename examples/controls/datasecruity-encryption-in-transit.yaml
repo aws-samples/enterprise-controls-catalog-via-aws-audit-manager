@@ -1,8 +1,8 @@
 name: DataSecruity-DatainTransit
 description: Information and records (data) are managed consistent with the organization’s risk strategy to protect the confidentiality, integrity, and availability of information.
-actionPlanTitle: All Resources needs to be encrypted at Rest
-actionPlanInstructions: Ensure all resoruces have attestations for Encryption at rest enabled
-testingInformation: Test attestations - preventive and detective controls for envryption at rest
+actionPlanTitle: All Resources needs to be encrypted in Transit
+actionPlanInstructions: Ensure all resoruces have attestations for Encryption in Transit enabled
+testingInformation: Test attestations - preventive and detective controls for encryption in Transit
 tags:
   ID: PRDS-1
   Subcategory: Data-in-transit
