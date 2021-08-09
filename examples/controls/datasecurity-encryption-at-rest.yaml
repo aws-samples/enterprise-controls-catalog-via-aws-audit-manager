@@ -1,7 +1,7 @@
-name: DataSecruity-DataAtRest
+name: DataSecurity-DataAtRest
 description: Information and records (data) are managed consistent with the organization’s risk strategy to protect the confidentiality, integrity, and availability of information.
 actionPlanTitle: All Resources needs to be encrypted in Rest
-actionPlanInstructions: Ensure all resoruces have attestations for Encryption in Rest enabled
+actionPlanInstructions: Ensure all resources have attestations for Encryption in Rest enabled
 testingInformation: Test attestations - preventive and detective controls for encryption in Rest
 tags:
   ID: PRDS-2

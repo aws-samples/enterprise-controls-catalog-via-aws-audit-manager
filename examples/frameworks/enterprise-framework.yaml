@@ -1,11 +1,11 @@
 name: NIST Enterprise Framework
-description: NIST Enterprise Control Framework customised
+description: NIST Enterprise Control Framework customized
 complianceType: NIST
 controlSets:
   - name: DataSecurity
     controls:
-      - DataSecruity-DataAtRest
-      - DataSecruity-DatainTransit
+      - DataSecurity-DataAtRest
+      - DataSecurity-DatainTransit
 tags:
   Owner: AWSSamples
   Company: AWSLabs
