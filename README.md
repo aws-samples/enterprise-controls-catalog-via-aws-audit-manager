@@ -1,4 +1,4 @@
-# Audit Manager Blog
+# Enterprise Custom Controls using Audit Manager
 
 ## Prerequisite
 
