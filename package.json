@@ -43,7 +43,10 @@
         "@aws-cdk/aws-sns": "^1.108.0",
         "@aws-cdk/core": "1.108.0",
         "@types/js-yaml": "^4.0.2",
+        "ansi-regex": "^6.0.1",
         "lodash": "^4.17.21",
-        "source-map-support": "^0.5.16"
+        "set-value": "^4.1.0",
+        "source-map-support": "^0.5.16",
+        "tmpl": "^1.0.5"
     }
 }
