@@ -37,6 +37,7 @@
         "webpack": "^5.50.0"
     },
     "dependencies": {
+        "@aws-cdk/aws-kms": "^1.126.0",
         "@aws-cdk/aws-lambda": "^1.108.0",
         "@aws-cdk/aws-s3": "^1.108.0",
         "@aws-cdk/aws-s3-notifications": "^1.108.0",

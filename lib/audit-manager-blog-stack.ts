@@ -20,6 +20,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
 import * as s3n from '@aws-cdk/aws-s3-notifications';
 import * as sns from '@aws-cdk/aws-sns';
+import * as kms from '@aws-cdk/aws-kms';
 import * as path from 'path';
 import { auditManagerActions } from './audit-manager-actions';
 
@@ -33,9 +34,14 @@ export class AuditManagerBlogStack extends cdk.Stack {
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             autoDeleteObjects: true,
         });
+        const snskey = new kms.Key(this, 'auditblogkey', {
+            enableKeyRotation: true,
+            description: 'auditblogkey',
+        });
 
         const notificationTopic = new sns.Topic(this, 'topic', {
             topicName: 'AuditManagerBlogNotification',
+            masterKey: snskey,
         });
 
         const auditManagerPolicyStatement = new iam.PolicyStatement({
@@ -55,9 +61,16 @@ export class AuditManagerBlogStack extends cdk.Stack {
                 SNS_TOPIC_ARN: notificationTopic.topicArn,
             },
         });
+        snskey.grantEncryptDecrypt(listenerFunction);
 
         auditControlsBucket.grantRead(listenerFunction);
         notificationTopic.grantPublish(listenerFunction);
+
+        listenerFunction.role?.addManagedPolicy(
+            iam.ManagedPolicy.fromAwsManagedPolicyName(
+                'service-role/AWSLambdaBasicExecutionRole'
+            )
+        );
 
         auditControlsBucket.addEventNotification(
             s3.EventType.OBJECT_CREATED_PUT,
