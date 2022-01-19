@@ -60,14 +60,14 @@ export const handler = async (event: S3Event): Promise<void> => {
             }
 
             // send successful notification
-            await sendNotification(`Successfully processed ${record.s3.object.key}`);
+            await sendNotification(
+                `Successfully processed ${record.s3.object.key}`
+            );
         } catch (error) {
             console.log(
                 `Error occurred on processing data file. Key: ${record.s3.object.key}`
             );
-            await handleError(
-                new Error(`Key: ${record.s3.object.key}; Error: ${error.message}`)
-            );
+            await handleError(new Error(`Key: ${record.s3.object.key}; `));
         }
     }
 };

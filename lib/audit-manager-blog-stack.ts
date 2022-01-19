@@ -14,47 +14,57 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as s3n from '@aws-cdk/aws-s3-notifications';
-import * as sns from '@aws-cdk/aws-sns';
-import * as kms from '@aws-cdk/aws-kms';
 import * as path from 'path';
 import { auditManagerActions } from './audit-manager-actions';
+import { Construct } from 'constructs';
+import {
+    CfnOutput,
+    RemovalPolicy,
+    Stack,
+    StackProps,
+    Duration,
+} from 'aws-cdk-lib';
+import { IKey, Key } from 'aws-cdk-lib/aws-kms';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Function, Code, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import { Bucket, BucketEncryption, EventType } from 'aws-cdk-lib/aws-s3';
+import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
 
-export class AuditManagerBlogStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class AuditManagerBlogStack extends Stack {
+    constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        const auditControlsBucket = new s3.Bucket(this, 'bucket', {
-            encryption: s3.BucketEncryption.S3_MANAGED,
+        const auditControlsBucket = new Bucket(this, 'bucket', {
+            encryption: BucketEncryption.S3_MANAGED,
             versioned: true,
-            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            removalPolicy: RemovalPolicy.DESTROY,
             autoDeleteObjects: true,
         });
-        const snskey = new kms.Key(this, 'auditblogkey', {
+        const snskey: IKey = new Key(this, 'auditblogkey', {
             enableKeyRotation: true,
             description: 'auditblogkey',
         });
 
-        const notificationTopic = new sns.Topic(this, 'topic', {
+        const notificationTopic = new Topic(this, 'topic', {
             topicName: 'AuditManagerBlogNotification',
             masterKey: snskey,
         });
 
-        const auditManagerPolicyStatement = new iam.PolicyStatement({
+        const auditManagerPolicyStatement = new PolicyStatement({
             actions: auditManagerActions,
-            effect: iam.Effect.ALLOW,
+            effect: Effect.ALLOW,
             resources: ['*'],
         });
 
-        const listenerFunction = new lambda.Function(this, 'lambda', {
+        const listenerFunction = new Function(this, 'lambda', {
             handler: 'index.handler',
-            code: lambda.Code.fromAsset(path.resolve(__dirname, `../dist/lambda/dist`)),
-            timeout: cdk.Duration.seconds(30),
-            runtime: lambda.Runtime.NODEJS_14_X,
+            code: Code.fromAsset(
+                path.resolve(__dirname, `../dist/lambda/dist`)
+            ),
+            timeout: Duration.seconds(30),
+            runtime: Runtime.NODEJS_14_X,
             reservedConcurrentExecutions: 1,
             initialPolicy: [auditManagerPolicyStatement],
             environment: {
@@ -67,22 +77,23 @@ export class AuditManagerBlogStack extends cdk.Stack {
         notificationTopic.grantPublish(listenerFunction);
 
         listenerFunction.role?.addManagedPolicy(
-            iam.ManagedPolicy.fromAwsManagedPolicyName(
+            ManagedPolicy.fromAwsManagedPolicyName(
                 'service-role/AWSLambdaBasicExecutionRole'
             )
         );
 
         auditControlsBucket.addEventNotification(
-            s3.EventType.OBJECT_CREATED_PUT,
-            new s3n.LambdaDestination(listenerFunction)
+            EventType.OBJECT_CREATED_PUT,
+            new LambdaDestination(listenerFunction)
         );
 
-        new cdk.CfnOutput(this, 'bucketOutput', {
-            description: 'Bucket name for Audit Manager Custom Controls and Frameworks',
+        new CfnOutput(this, 'bucketOutput', {
+            description:
+                'Bucket name for Audit Manager Custom Controls and Frameworks',
             value: auditControlsBucket.bucketName,
         });
 
-        new cdk.CfnOutput(this, 'notificationTopicArnOutput', {
+        new CfnOutput(this, 'notificationTopicArnOutput', {
             description: 'SNS topic ARN for notification',
             value: notificationTopic.topicArn,
         });

@@ -16,8 +16,9 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
+
 import { AuditManagerBlogStack } from '../lib/audit-manager-blog-stack';
 
-const app = new cdk.App();
+const app = new App();
 new AuditManagerBlogStack(app, 'AuditManagerBlogStack');
